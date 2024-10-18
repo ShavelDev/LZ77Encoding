@@ -14,6 +14,13 @@ class JZ77Encoder{
 private:
     deque<char> chars;
     int startingIndex;
+    
+    void printSlidingWindow(){
+        for (int i = 0; i < startingIndex; i++) {
+            cout << "_";
+        }
+    }
+    
     bool getTouple(){
         if (chars.empty()) return false;
         
@@ -25,7 +32,10 @@ private:
         //check if there is a letter in the known part
         int foundIndex = -1;
 
-        for(int i = startingIndex; i < las; i++){
+        
+        //cout << "las: " << las << " startingIndex: " << startingIndex
+        for(int i = 0; i < las; i++){
+            cout << "looging at: " << chars[i] << " at index " << i << endl;
             if (chars[i] == firstLetter) {
                 foundIndex = i;
             }
@@ -37,38 +47,49 @@ private:
         int comparedLetterIndex = las+1;
         if(foundIndex != -1){
             
-            for (int i = las; i < size; i++) {
+            cout << "look ahead buffer size: " << size - lookAheadStart << endl;
+            for (int i = lookAheadStart; i < size; i++) {
                 
                 
                 if(chars[firstSimLetterIndex] == chars[comparedLetterIndex]){
+                    cout << "another letter found" << endl;
                     firstSimLetterIndex++;
                     comparedLetterIndex++;
                     continue; //DELETE
                 }else{
                     firstSimLetterIndex--;
-                    comparedLetterIndex--;
+                    //comparedLetterIndex--;
                     break;
                 }
             }
             
-            cout << "(" << las - foundIndex << ", "<< firstSimLetterIndex - foundIndex << ", " << ((comparedLetterIndex != (chars.size()-1)) ? chars[comparedLetterIndex + 1] : '+') << ")" << endl;
+            cout << "(" << las - foundIndex << ", "<< firstSimLetterIndex - foundIndex + 1<< ", " << ((comparedLetterIndex != (chars.size())) ? chars[comparedLetterIndex] : '+') << ")" << endl;
             
             
         }else{
             cout << "(0, 0, " << firstLetter << ")" << endl;
         }
         
+
+        
         int lettersToRemove = comparedLetterIndex - las;
-        cout << "deleting " << lettersToRemove << endl;
+        cout << "letters to remove: " << lettersToRemove << endl;
         for (int i = 0; i < lettersToRemove; i++) {
-            chars.pop_front();
+            if (startingIndex == 0) {
+                cout << "deleting " << lettersToRemove << endl;
+                chars.pop_front();
+            }
+            
             if (startingIndex > 0) {
                 startingIndex--;
             }
             
         }
         
-        cout << "new staring index: " << startingIndex << endl;
+        cout << "new staring index: " << startingIndex << endl << endl;
+        
+        
+        
         
         
         return false;
@@ -80,6 +101,7 @@ public:
     JZ77Encoder(int size, int lookAheadStart) : size(size), lookAheadStart(lookAheadStart){
         startingIndex = size - lookAheadStart;
     };
+    
     
     void printCodes(string characters){
         for (int i = 0; i < characters.size(); i++) {
@@ -102,9 +124,9 @@ public:
 int main(int argc, const char * argv[]) {
     // insert code here...
     
-    string characters = "ABCDEFG";
+    string characters = "mojamamalubimama";
     
-    JZ77Encoder enc(4, 2);
+    JZ77Encoder enc(14, 7);
     enc.printCodes(characters);
     
 
