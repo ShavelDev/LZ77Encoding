@@ -25,7 +25,7 @@ private:
         if (chars.empty()) return false;
         
         // we need to handle the cases where sliding window is now filled
-        int las = lookAheadStart - startingIndex;
+        int las = lookAheadStart - startingIndex - 1;
         
         char firstLetter = chars[las];
             
@@ -33,11 +33,11 @@ private:
         int foundIndex = -1;
 
         
-        //cout << "las: " << las << " startingIndex: " << startingIndex
-        for(int i = 0; i < las; i++){
-            cout << "looging at: " << chars[i] << " at index " << i << endl;
-            if (chars[i] == firstLetter) {
-                foundIndex = i;
+        cout << "las: " << las << " startingIndex: " << startingIndex << endl;
+        for(int i = las; i > 0; i--){
+            cout << "looging at: " << chars[i-1] << " at index " << i - 1<< endl;
+            if (chars[i-1] == firstLetter) {
+                foundIndex = i-1;
             }
         }
         
@@ -47,12 +47,12 @@ private:
         int comparedLetterIndex = las+1;
         if(foundIndex != -1){
             
-            cout << "look ahead buffer size: " << size - lookAheadStart << endl;
+            //cout << "look ahead buffer size: " << size - lookAheadStart << endl;
             for (int i = lookAheadStart; i < size; i++) {
                 
                 
                 if(chars[firstSimLetterIndex] == chars[comparedLetterIndex]){
-                    cout << "another letter found" << endl;
+                    //cout << "another letter found" << endl;
                     firstSimLetterIndex++;
                     comparedLetterIndex++;
                     continue; //DELETE
@@ -64,6 +64,7 @@ private:
             }
             
             cout << "(" << las - foundIndex << ", "<< firstSimLetterIndex - foundIndex + 1<< ", " << ((comparedLetterIndex != (chars.size())) ? chars[comparedLetterIndex] : '+') << ")" << endl;
+            //cout << "(" << las - foundIndex << ", "<< firstSimLetterIndex - foundIndex + 1<< ")" << endl;
             
             
         }else{
@@ -73,10 +74,10 @@ private:
 
         
         int lettersToRemove = comparedLetterIndex - las;
-        cout << "letters to remove: " << lettersToRemove << endl;
+        //cout << "letters to remove: " << lettersToRemove << endl;
         for (int i = 0; i < lettersToRemove; i++) {
             if (startingIndex == 0) {
-                cout << "deleting " << lettersToRemove << endl;
+               // cout << "deleting " << lettersToRemove << endl;
                 chars.pop_front();
             }
             
@@ -86,7 +87,7 @@ private:
             
         }
         
-        cout << "new staring index: " << startingIndex << endl << endl;
+        //cout << "new staring index: " << startingIndex << endl << endl;
         
         
         
@@ -98,8 +99,12 @@ private:
 public:
     const int size;
     const int lookAheadStart;
-    JZ77Encoder(int size, int lookAheadStart) : size(size), lookAheadStart(lookAheadStart){
-        startingIndex = size - lookAheadStart;
+    JZ77Encoder(int searchBufferSize, int lookAheadBufferSize): size(searchBufferSize+lookAheadBufferSize), lookAheadStart(searchBufferSize+1){
+        startingIndex = searchBufferSize;
+        
+        cout<< "startingIndex: " << startingIndex << endl;
+        cout<< "lookAheadStart: " << lookAheadStart << endl;
+        cout<< "size: " << size << endl << endl;
     };
     
     
@@ -108,11 +113,14 @@ public:
             chars.push_back(characters[i]);
         }
         
-        cout << "Chars size: " << chars.size() << endl;
-        cout << "Chars[0]: " << chars[0] << endl;
+//        cout << "Chars size: " << chars.size() << endl;
+//        cout << "Chars[0]: " << chars[0] << endl;
         
-        for (int i = 0; i < characters.size(); i++) {
+        for(int i = 0; i < 10; i++) {
+            
+            
             getTouple();
+            cout << chars.size() << " " << size << endl;
         }
         
     };
@@ -124,9 +132,9 @@ public:
 int main(int argc, const char * argv[]) {
     // insert code here...
     
-    string characters = "mojamamalubimama";
+    string characters = "abcdefab";
     
-    JZ77Encoder enc(14, 7);
+    JZ77Encoder enc(8,4);
     enc.printCodes(characters);
     
 
