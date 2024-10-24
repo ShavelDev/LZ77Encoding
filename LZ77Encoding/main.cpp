@@ -34,6 +34,9 @@ private:
 
         
         cout << "las: " << las << " startingIndex: " << startingIndex << endl;
+        cout << "las " << las << " lookAheadStart: " << lookAheadStart  << " chars.size()< "<< chars.size() << endl;
+        if(las >= chars.size()) return false;
+        
         for(int i = las; i > 0; i--){
             cout << "looging at: " << chars[i-1] << " at index " << i - 1<< endl;
             if (chars[i-1] == firstLetter) {
@@ -71,7 +74,7 @@ private:
             cout << "(0, 0, " << firstLetter << ")" << endl;
         }
         
-
+        cout << "las " << las << " lookAheadStart: " << lookAheadStart << " chars.size()< "<< chars.size() << endl << endl;
         
         int lettersToRemove = comparedLetterIndex - las;
         //cout << "letters to remove: " << lettersToRemove << endl;
@@ -87,13 +90,13 @@ private:
             
         }
         
-        //cout << "new staring index: " << startingIndex << endl << endl;
         
         
         
         
         
-        return false;
+        
+        return true;
     }
     
 public:
@@ -119,8 +122,10 @@ public:
         for(int i = 0; i < 10; i++) {
             
             
-            getTouple();
-            cout << chars.size() << " " << size << endl;
+            if(getTouple() == false){
+                break;
+            }
+            //cout << chars.size() << " " << size << endl;
         }
         
     };
