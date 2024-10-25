@@ -34,7 +34,7 @@ private:
 
         
         cout << "las: " << las << " startingIndex: " << startingIndex << endl;
-        cout << "las " << las << " lookAheadStart: " << lookAheadStart  << " chars.size()< "<< chars.size() << endl;
+        cout << "las: " << las << " lookAheadStart: " << lookAheadStart  << " chars.size(): "<< chars.size() << endl;
         if(las >= chars.size()) return false;
         
         for(int i = las; i > 0; i--){
@@ -48,6 +48,8 @@ private:
         
         int firstSimLetterIndex = foundIndex+1;
         int comparedLetterIndex = las+1;
+        int length = 1;
+        int distance = 0;
         if(foundIndex != -1){
             
             //cout << "look ahead buffer size: " << size - lookAheadStart << endl;
@@ -60,24 +62,37 @@ private:
                     comparedLetterIndex++;
                     continue; //DELETE
                 }else{
-                    firstSimLetterIndex--;
                     //comparedLetterIndex--;
                     break;
                 }
             }
+            firstSimLetterIndex--;
             
-            cout << "(" << las - foundIndex << ", "<< firstSimLetterIndex - foundIndex + 1<< ", " << ((comparedLetterIndex != (chars.size())) ? chars[comparedLetterIndex] : '+') << ")" << endl;
+            length = firstSimLetterIndex - foundIndex + 1;
+            distance = las - foundIndex;
+            
+            if (length < 3) {
+                cout << "(0, 0, " << firstLetter << ")" << endl;
+                //switching the comparedLetterIndex to what it would be if the length was larger
+                length = 1;
+            }else{
+                cout << "(" << las - foundIndex << ", "<< firstSimLetterIndex - foundIndex + 1<< ", " << ((comparedLetterIndex != (chars.size())) ? chars[comparedLetterIndex] : '+') << ")" << endl;
+            }
+            
             //cout << "(" << las - foundIndex << ", "<< firstSimLetterIndex - foundIndex + 1<< ")" << endl;
+            
             
             
         }else{
             cout << "(0, 0, " << firstLetter << ")" << endl;
         }
         
-        cout << "las " << las << " lookAheadStart: " << lookAheadStart << " chars.size()< "<< chars.size() << endl << endl;
+        //cout << "las " << las << " lookAheadStart: " << lookAheadStart << " chars.size()< "<< chars.size() << endl << endl;
         
-        int lettersToRemove = comparedLetterIndex - las;
-        //cout << "letters to remove: " << lettersToRemove << endl;
+        
+        //in
+        int lettersToRemove = length;
+        cout << "letters to remove: " << lettersToRemove << endl << endl;
         for (int i = 0; i < lettersToRemove; i++) {
             if (startingIndex == 0) {
                // cout << "deleting " << lettersToRemove << endl;
@@ -119,7 +134,7 @@ public:
 //        cout << "Chars size: " << chars.size() << endl;
 //        cout << "Chars[0]: " << chars[0] << endl;
         
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < characters.size(); i++) {
             
             
             if(getTouple() == false){
@@ -137,9 +152,9 @@ public:
 int main(int argc, const char * argv[]) {
     // insert code here...
     
-    string characters = "abcdefab";
+    string characters = "abcmkgabcdabcdabcdqwe";
     
-    JZ77Encoder enc(8,4);
+    JZ77Encoder enc(8,8);
     enc.printCodes(characters);
     
 
